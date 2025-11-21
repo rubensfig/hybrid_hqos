@@ -19,7 +19,7 @@ fi
 BASEIFACE="${IFACE/%np0}"
 
 # MACS=("00:11:22:33:44:00" "00:11:22:33:55:00" "00:11:22:33:44:01" "00:11:22:33:55:01" "00:11:22:33:44:02" "00:11:22:33:55:02" "00:11:22:33:44:03" "00:11:22:33:55:03" "00:11:22:33:44:04" "00:11:22:33:55:04" "00:11:22:33:44:05" "00:11:22:33:55:05" "00:11:22:33:44:06" "00:11:22:33:55:06" "00:11:22:33:44:07" "00:11:22:33:55:07")
-MACS=("00:11:22:33:44:00" "00:11:22:33:44:01" "00:11:22:33:44:02" "00:11:22:33:44:03" "00:11:22:33:44:04" "00:11:22:33:44:05" "00:11:22:33:44:06" "00:11:22:33:44:07")
+MACS=("00:11:22:33:44:00" "00:11:22:33:44:01" "00:11:22:33:44:02" "00:11:22:33:44:03" "00:11:22:33:44:04" "00:11:22:33:44:05" "00:11:22:33:44:06" "00:11:22:33:44:07" "00:11:22:33:44:08" "00:11:22:33:44:09" "00:11:22:33:44:10" "00:11:22:33:44:11" "00:11:22:33:44:12" "00:11:22:33:44:13" "00:11:22:33:44:14" "00:11:22:33:44:15")
 
 # $BASEMAC is defined in ealopt script
 sub_mac() {
@@ -52,7 +52,7 @@ else
   dpdk-devbind.py --bind ice $BASEPCI
   # should now check that the correct (pmdlink patched) ice driver has been loaded
 
-  # echo "module ice +p" > /sys/kernel/debug/dynamic_debug/control
+  echo "module ice +p" > /sys/kernel/debug/dynamic_debug/control
 
   ip link del dev $GTPDEV || :
   ip link del $BRIDGE || :
@@ -63,7 +63,7 @@ else
 
   devlink dev eswitch set pci/$BASEPCI mode switchdev
 
-  echo 8 >/sys/bus/pci/devices/$BASEPCI/sriov_numvfs
+  echo 16 >/sys/bus/pci/devices/$BASEPCI/sriov_numvfs
   # echo 0 > /sys/bus/pci/devices/$BASEPCI/sriov_drivers_autoprobe
   
   # echo 512 > /sys/bus/pci/devices/$BASEPCI/rss_lut_pf_attr
@@ -76,12 +76,12 @@ else
   # done
   # echo 1 > /sys/bus/pci/devices/$BASEPCI/sriov_drivers_autoprobe
 
-  for i in {0..7}; do
+  for i in {0..15}; do
     ip link set $IFACE vf $i mac $(sub_mac $i) spoof off
   done
 
   ethtool -K $IFACE hw-tc-offload on
-  for i in {0..7}; do
+  for i in {0..15}; do
     SUBIFACE=$(rep_iface $i)
     ip link set $SUBIFACE master $BRIDGE
     ip link set $SUBIFACE up
@@ -90,7 +90,7 @@ else
 
   tc qdisc add dev $IFACE ingress
 
-  for i in {0..7}; do
+  for i in {0..15}; do
     SUBMAC=$(sub_mac $i)
     SUBIFACE=$(rep_iface $i)
     tc qdisc add dev $SUBIFACE ingress
@@ -101,7 +101,8 @@ else
     tc filter add dev ${IFACE} ingress protocol ip flower dst_mac $SUBMAC skip_sw action mirred egress redirect dev $SUBIFACE
   done
 
-  dpdk-devbind.py -b vfio-pci $VF0 $VF1 $VF2 $VF3 $VF4 $VF5 $VF6 $VF7
+  dpdk-devbind.py -b vfio-pci $VF0 $VF1 $VF2 $VF3 $VF4 $VF5 $VF6 $VF7 $VF8 $VF9 $VF10 $VF11 $VF12 $VF13 $VF14 $VF15
+
 fi
 
 echo "success"

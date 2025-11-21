@@ -1,0 +1,50 @@
+version: "3.8"
+services:
+  vpp0:
+    image: localhost:30500/vagf_25gbps
+    container_name: bng0
+    privileged: true
+    network_mode: "host"
+    volumes:
+      - ./configs/instance-config/bng0/startup.conf:/etc/vpp/vpp.conf
+      - ./configs/instance-config/bng0/vpp_cli_l3conf.conf:/etc/vpp/vpp_cli_l3conf.conf
+      - ./configs/instance-config/bng0/bulk_configs/dl/allowlist.conf:/etc/vpp/bulk_configs/bng/allowlist.conf
+      - ./configs/instance-config/bng0/bulk_configs/dl/flowtables.conf:/etc/vpp/bulk_configs/bng/flowtables.conf
+      - ./configs/instance-config/bng0/bulk_configs/dl/encap.conf:/etc/vpp/bulk_configs/bng/encap.conf
+      - /dev/hugepages:/dev/hugepages
+        #  vpp1:
+        #    image: localhost:30500/vagf_25gbps
+        #    container_name: bng1
+        #    privileged: true
+        #    network_mode: "host"
+        #    volumes:
+        #      - ./configs/instance-config/bng1/startup.conf:/etc/vpp/vpp.conf
+        #      - ./configs/instance-config/bng1/vpp_cli_l3conf.conf:/etc/vpp/vpp_cli_l3conf.conf
+        #      - ./configs/instance-config/bng1/bulk_configs/dl/allowlist.conf:/etc/vpp/bulk_configs/bng/allowlist.conf
+        #      - ./configs/instance-config/bng1/bulk_configs/dl/flowtables.conf:/etc/vpp/bulk_configs/bng/flowtables.conf
+        #      - ./configs/instance-config/bng1/bulk_configs/dl/encap.conf:/etc/vpp/bulk_configs/bng/encap.conf
+        #      - /dev/hugepages:/dev/hugepages
+        #  vpp2:
+        #    image: localhost:30500/vagf_25gbps
+        #    container_name: bng2
+        #    privileged: true
+        #    network_mode: "host"
+        #    volumes:
+        #      - ./configs/instance-config/bng2/startup.conf:/etc/vpp/vpp.conf
+        #      - ./configs/instance-config/bng2/vpp_cli_l3conf.conf:/etc/vpp/vpp_cli_l3conf.conf
+        #      - ./configs/instance-config/bng2/bulk_configs/dl/allowlist.conf:/etc/vpp/bulk_configs/bng/allowlist.conf
+        #      - ./configs/instance-config/bng2/bulk_configs/dl/flowtables.conf:/etc/vpp/bulk_configs/bng/flowtables.conf
+        #      - ./configs/instance-config/bng2/bulk_configs/dl/encap.conf:/etc/vpp/bulk_configs/bng/encap.conf
+        #      - /dev/hugepages:/dev/hugepages
+        #  vpp3:
+        #    image: localhost:30500/vagf_25gbps
+        #    container_name: bng3
+        #    privileged: true
+        #    network_mode: "host"
+        #    volumes:
+        #      - ./configs/instance-config/bng3/startup.conf:/etc/vpp/vpp.conf
+        #      - ./configs/instance-config/bng3/vpp_cli_l3conf.conf:/etc/vpp/vpp_cli_l3conf.conf
+        #      - ./configs/instance-config/bng3/bulk_configs/dl/allowlist.conf:/etc/vpp/bulk_configs/bng/allowlist.conf
+        #      - ./configs/instance-config/bng3/bulk_configs/dl/flowtables.conf:/etc/vpp/bulk_configs/bng/flowtables.conf
+        #      - ./configs/instance-config/bng3/bulk_configs/dl/encap.conf:/etc/vpp/bulk_configs/bng/encap.conf
+        #      - /dev/hugepages:/dev/hugepages
