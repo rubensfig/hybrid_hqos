@@ -7,6 +7,8 @@ source setup/ealopt2.sh
 
 ./setup/app_prep.sh
 
-sudo $DPDK/x86_64-native-linuxapp-gcc/examples/dpdk-qos_sched -l35,36,37,38 -a b3:01.0 -n 8 -- --mnc 35 --cfg $DPDK/examples/qos_sched/65kpipe_100gb_calibration.cfg --pfc 0,0,36,37,38 --rsz 4096,32768,4096 --bsz 128,512,511,511 -i --msz 524288
+sudo devlink port function rate set pci/0000:b3:00.0/node_5 tx_max 2.9Gbps
+
+sudo $DPDK/x86_64-native-linuxapp-gcc/examples/dpdk-qos_sched -l35,36,37,38 -a b3:01.0 -n 8 -- --mnc 35 --cfg $DPDK/examples/qos_sched/profile_100gb_unlimited.cfg --pfc 0,0,36,37 --rsz 4096,32768,4096 --bsz 128,512,511,511 -i --msz 524288
 # sudo $DPDK/x86_64-native-linuxapp-gcc/examples/dpdk-qos_sched -l35,36,37,38 -a b3:01.0 -n 8 -- --mnc 35 --cfg $DPDK/examples/qos_sched/profile.cfg --pfc 0,0,36,37,38 --rsz 4096,32768,4096 --bsz 128,512,511,511 -i --msz 524288
 
